@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help4Every1 - Worker Interface</title>
+    <link rel="stylesheet" href="workerInterface.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <div class="time">18:25</div>
+      <div class="icons"><span>•</span><span>📶</span><span>🔋</span></div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="back-button">←</div>
+      <div class="logo">Help4Every1</div>
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search for tasks...">
+      </div>
+      <div class="filter-toggle">
+        <span class="filter-icon">🔍</span>
+        <span>Filter</span>
+      </div>
+    </div>
+
+    <!-- Hamburger Button -->
+    <button id="menu-toggle" class="hamburger">&#9776;</button>
+
+    <div class="main-content">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="filter-container">
+          <div class="filter-label">Location</div>
+          <div class="location-selector" id="desktop-location">
+            <div class="flag">🇪🇸</div>
+            <div class="location-text">Madrid, Spain • 40km</div>
+          </div>
+
+          <div class="filter-label" style="margin-top: 15px;">Distance</div>
+          <div class="filter-row">
+            <div class="filter-option" data-distance="5">5km</div>
+            <div class="filter-option" data-distance="10">10km</div>
+            <div class="filter-option" data-distance="20">20km</div>
+            <div class="filter-option active" data-distance="40">40km</div>
+          </div>
+
+          <div class="filter-label" style="margin-top: 15px;">Categories</div>
+          <div class="category-grid">
+            <div class="filter-option active" data-category="all">All</div>
+            <div class="filter-option" data-category="cleaning">Cleaning</div>
+            <div class="filter-option" data-category="home">Home Services</div>
+            <div class="filter-option" data-category="groceries">Groceries</div>
+            <div class="filter-option" data-category="errands">Errands</div>
+            <div class="filter-option" data-category="food">Food & Catering</div>
+            <div class="filter-option" data-category="beauty">Beauty & Health</div>
+            <div class="filter-option" data-category="others">Others</div>
+          </div>
+
+          <div class="filter-label" style="margin-top: 15px;">Salary Range</div>
+          <div class="salary-filter">
+            <div class="range-container">
+              <input type="range" min="5" max="100" value="5" class="range-slider" id="salary-slider">
+              <div class="range-value">€5+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tasks Section -->
+      <div class="tasks-section">
+        <div class="location-bar" id="location-selector">
+          <div class="flag">🇪🇸</div>
+          <div class="location-text">Madrid, Spain • 40km</div>
+        </div>
+
+        <div class="filter-container" id="mobile-filters">
+          <!-- Mobile filters -->
+        </div>
+
+        <div class="section-title">Tasks nearby</div>
+
+        <div class="categories-header">
+          <div class="categories-title">Categories</div>
+          <div class="categories-arrow">›</div>
+        </div>
+
+        <div class="category-scroll">
+          <!-- Mobile category scroll -->
+        </div>
+
+        <div class="loading"><span>⏳</span> Loading tasks...</div>
+        <div class="no-tasks">No tasks match your current filters. Try adjusting your search criteria.</div>
+
+        <!-- Fixed: Add this container for JS to populate tasks -->
+        <div class="tasks-container"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 Help4Every1. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+      document.querySelector(".sidebar").classList.toggle("show");
+    });
+
+    async function loadTasks() {
+      const container = document.querySelector('.tasks-container');
+      container.innerHTML = '<div class="loading">⏳ Loading tasks...</div>';
+
+      try {
+        const res = await fetch('/api/tasks');
+        const tasks = await res.json();
+        container.innerHTML = '';
+
+        if (tasks.length === 0) {
+          container.innerHTML = '<div class="no-tasks">No tasks available.</div>';
+          return;
+        }
+
+        tasks.forEach(task => {
+          const card = document.createElement('div');
+          card.classList.add('task-card');
+          card.innerHTML = `
+            <div class="task-header">
+              <div class="task-title">${task.taskTitle}</div>
+              <div class="task-price">• €${task.budget || 'N/A'}</div>
+            </div>
+            <div class="task-details">
+              <div class="task-location">${task.location}</div>
+              <div class="task-time">When: ${task.date || 'Flexible'}, ${task.time || ''}</div>
+              <div class="task-description">${task.description}</div>
+            </div>
+            <div class="worker-info">
+              <div class="worker-avatar">U</div>
+              <div>
+                <div class="worker-name">Unassigned</div>
+                <div class="worker-status">Active now</div>
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        container.innerHTML = '<div class="no-tasks">Error loading tasks.</div>';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', loadTasks);
+  </script>
+</body>
+</html>

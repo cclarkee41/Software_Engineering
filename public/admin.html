@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Help4Every1</title>
+  <link rel="stylesheet" href="main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@300;500&display=swap" rel="stylesheet"/>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .admin-container { padding: 40px; }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .card h3 { margin-bottom: 15px; color: #475db3; }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .table th, .table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .table th {
+      background-color: #475db3;
+      color: white;
+    }
+    .btn {
+      background-color: #475db3;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-right: 5px;
+    }
+    .btn:hover { background-color: #394a94; }
+    .notifications {
+      margin-top: 30px;
+      background-color: #fff4e5;
+      padding: 20px;
+      border-radius: 10px;
+      color: #994c00;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <div class="logo">Help4Every1 - Admin</div>
+      <nav>
+        <ul>
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#users">Users</a></li>
+          <li><a href="#requests">Requests</a></li>
+          <li><a href="#messages">Messages</a></li>
+          <li><a href="adminReports.html">Reports</a></li>
+        </ul>
+      </nav>
+      <div class="user-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="user-image" alt="Admin"/>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-container">
+    <h2>Admin Dashboard</h2>
+    <div class="dashboard-grid">
+      <div class="card"><h3>Total Users</h3><p id="userCount">Loading...</p></div>
+      <div class="card"><h3>Pending Requests</h3><p id="requestCount">Loading...</p></div>
+      <div class="card"><h3>Messages</h3><p id="messageCount">Loading...</p></div>
+      <div class="card"><h3>Reports</h3><p id="reportCount">Loading...</p></div>
+    </div>
+
+    <section id="users">
+      <h3>Manage Users</h3>
+      <table class="table">
+        <thead>
+          <tr><th>Name</th><th>Email</th><th>Role</th><th>Action</th></tr>
+        </thead>
+        <tbody id="userTable"></tbody>
+      </table>
+    </section>
+
+    <section id="requests">
+      <h3>Service Requests</h3>
+      <table class="table">
+        <thead>
+          <tr><th>Request ID</th><th>User</th><th>Status</th><th>Action</th></tr>
+        </thead>
+        <tbody id="requestTable"></tbody>
+      </table>
+    </section>
+
+    <section id="messages">
+      <h3>Inbox</h3>
+      <div class="notifications" id="messageBox">Loading...</div>
+    </section>
+
+    <section id="reports">
+      <h3>Reports</h3>
+      <ul>
+        <li>Total revenue this month: $4,500</li>
+        <li>Most active worker: Alex Johnson</li>
+        <li>Top customer rating: 4.9 ⭐</li>
+      </ul>
+    </section>
+  </div>
+
+  <footer>&copy; 2025 Help4Every1 - All rights reserved</footer>
+
+  <script>
+    async function loadDashboard() {
+      try {
+        const [summary, users, tasks, messages] = await Promise.all([
+          fetch('/api/summary').then(res => res.json()),
+          fetch('/api/users').then(res => res.json()),
+          fetch('/api/tasks').then(res => res.json()),
+          fetch('/api/messages').then(res => res.json())
+        ]);
+
+        document.getElementById("userCount").textContent = summary.userCount;
+        document.getElementById("requestCount").textContent = summary.requestCount;
+        document.getElementById("messageCount").textContent = summary.messageCount;
+        document.getElementById("reportCount").textContent = summary.reportCount;
+
+        const userTable = document.getElementById("userTable");
+        userTable.innerHTML = '';
+        users.forEach(user => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${user.username}</td>
+            <td>${user.email}</td>
+            <td>${user.role}</td>
+            <td><button class="btn" onclick="deleteUser('${user.username}', '${user.role}', this)">Remove</button></td>
+          `;
+          userTable.appendChild(row);
+        });
+
+        const requestTable = document.getElementById("requestTable");
+        requestTable.innerHTML = '';
+        users.filter(u => !u.approved).forEach((user, index) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>#${index + 1}</td>
+            <td>${user.username}</td>
+            <td>Pending</td>
+            <td>
+              <button class="btn" onclick="approveUser('${user.username}', '${user.role}', true)">Approve</button>
+              <button class="btn" onclick="approveUser('${user.username}', '${user.role}', false)">Reject</button>
+            </td>
+          `;
+          requestTable.appendChild(row);
+        });
+
+        const messageBox = document.getElementById("messageBox");
+        messageBox.innerHTML = messages.map(m => `<strong>${m.from}:</strong> ${m.content}<br>`).join('');
+
+      } catch (error) {
+        console.error('Error loading dashboard:', error);
+      }
+    }
+
+    async function deleteUser(username, role, button) {
+      if (!confirm(`Are you sure you want to delete ${username}?`)) return;
+      try {
+        const res = await fetch('/api/users', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, role })
+        });
+        if (res.ok) {
+          button.closest('tr').remove();
+          alert(`${username} has been deleted.`);
+        } else {
+          const err = await res.json();
+          alert(`Failed to delete user: ${err.message}`);
+        }
+      } catch (error) {
+        console.error('Delete user error:', error);
+        alert('Server error while deleting user.');
+      }
+    }
+
+    async function approveUser(username, role, approval) {
+      try {
+        const res = await fetch('/api/approve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, role, approved: approval })
+        });
+        if (res.ok) {
+          alert(`${username} has been ${approval ? 'approved' : 'rejected'}.`);
+          loadDashboard(); // refresh table
+        } else {
+          const err = await res.json();
+          alert(`Approval error: ${err.message}`);
+        }
+      } catch (error) {
+        console.error('Approval error:', error);
+        alert('Server error while updating approval.');
+      }
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>

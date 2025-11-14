@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Profile | Help4Every1</title>
+  <link rel="stylesheet" href="main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <h1 class="logo">Help4Every1</h1>
+      <nav>
+        <ul>
+          <li><a href="main.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="p-order.html">Previous Orders</a></li>
+          <li><a href="task.html">Post a Task</a></li>
+          <a href="profile.html" class="user-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" viewBox="0 0 24 24">
+              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+            </svg>
+          </a>
+        </ul>
+      </nav>
+    </div>
+    <div class="banner" style="background-image: url('https://images.unsplash.com/photo-1612831455543-dadbdebe8f9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');">
+        <h2>Welcome to Your Profile</h2>
+        <p>Your personal dashboard to control everything</p>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h3>Account Information</h3>
+      <ul>
+        <li><strong>Username:</strong> <span id="profile-name">Loading...</span></li>
+        <li><strong>Email:</strong> <span id="profile-email">Loading...</span></li>
+        <li><strong>Phone:</strong> <span id="profile-phone">+--- --- ----</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Wallet & Payments</h3>
+      <ul>
+        <li>Balance: $85.00</li>
+        <li>Linked Card: **** **** **** 1234</li>
+        <li><a href="payment.html">Add Payment Method</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Account Settings</h3>
+      <ul>
+        <li><a href="#">Change Password</a></li>
+        <li><a href="#">Update Profile Info</a></li>
+        <li><a href="#">Notification Preferences</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Support</h3>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Report a Problem</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Help4Every1. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const username = localStorage.getItem("username");
+      const role = localStorage.getItem("role");
+
+      if (!username || !role) {
+        alert("You are not logged in.");
+        window.location.href = "index.html";
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/api/profile", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, role })
+        });
+
+        const user = await response.json();
+
+        if (response.ok) {
+          document.getElementById("profile-name").textContent = user.username;
+          document.getElementById("profile-email").textContent = user.email;
+        } else {
+          alert(user.message || "Could not load profile.");
+        }
+      } catch (err) {
+        console.error("Error loading profile:", err);
+        alert("Failed to connect to server.");
+      }
+    });
+  </script>
+</body>
+</html>

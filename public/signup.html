@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up - Help4Every1</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <ul class="floating-shapes">
+        
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+      </ul>
+  <div class="login-container">
+    <h1 class="title">Help4Every1</h1>
+    <h2>Create Your Account</h2>
+    <form id="signupForm">
+      <div class="input-group">
+        <i class="fa fa-user"></i>
+        <input type="text" name="username" placeholder="Username" required>
+      </div>
+      <div class="input-group">
+        <i class="fa fa-envelope"></i>
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+      <div class="input-group">
+        <i class="fa fa-lock"></i>
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+      <div class="input-group">
+        <i class="fa fa-lock"></i>
+        <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+      </div>
+      <!-- 🔽 Role selection added -->
+            <div class="input-group">
+                <i class="fa fa-user-shield"></i>
+                <select id="role" required>
+                    <option value="">Select role</option>
+                    <option value="Customer">Customer</option>
+                    <option value="Worker">Worker</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+
+      <button class="login-button" type="submit">Sign Up</button>
+
+      <p class="signup-link">
+        Already have an account? <a href="index.html">Login</a>
+      </p>
+    </form>
+    <p class="alt-login-text">Or sign up with</p>
+    <div class="social-icons">
+      <i class="fab fa-google"></i>
+      <i class="fab fa-facebook-f"></i>
+      <i class="fab fa-twitter"></i>
+      <i class="fab fa-linkedin-in"></i>
+
+    </div>
+  </div>
+  <script>
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const data = {
+    username: form.username.value,
+    email: form.email.value,
+    password: form.password.value,
+    confirmPassword: form.confirmPassword.value,
+    role: document.getElementById('role').value // Get the selected role
+  };
+
+  // Optional: check if passwords match before sending
+  if (data.password !== data.confirmPassword) {
+    alert('Passwords do not match!');
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/api/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const result = await response.json();
+    if (response.ok) {
+      alert('Signup successful!');
+      // Optionally redirect to login page
+      window.location.href = 'index.html';
+    } else {
+      alert(result.message || 'Signup failed');
+    }
+  } catch (err) {
+    alert('Error connecting to server');
+  }
+});
+</script>
+</body>
+</html>

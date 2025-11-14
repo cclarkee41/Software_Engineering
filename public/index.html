@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Help4Every1</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <ul class="floating-shapes">
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+    </ul>
+
+    <div class="login-container">
+        <h1 class="title">Help4Every1</h1>
+        <h2>Welcome Back</h2>
+        <form onsubmit="return validateLogin(event)">
+            <div class="input-group">
+                <i class="fa fa-user"></i>
+                <input type="text" id="username" placeholder="Username" required>
+            </div>
+            <div class="input-group">
+                <i class="fa fa-lock"></i>
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+
+            <!-- 🔽 Role selection added -->
+            <div class="input-group">
+                <i class="fa fa-user-shield"></i>
+                <select id="role" required>
+                    <option value="">Select role</option>
+                    <option value="Customer">Customer</option>
+                    <option value="Worker">Worker</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+
+            <div class="form-extra">
+                <a href="forgot-password.html">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="login-button">Login</button>
+
+            <p class="signup-link">
+                Don’t have an account? <a href="signup.html">Sign up</a>
+            </p>
+        </form>
+
+        <p class="alt-login-text">Or use social platforms to login</p>
+        <div class="social-icons">
+            <i class="fab fa-google"></i>
+            <i class="fab fa-facebook-f"></i>
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-linkedin-in"></i>
+        </div>
+    </div>
+
+    <script>
+        async function validateLogin(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const role = document.getElementById("role").value;
+
+            if (!role) {
+                alert("Please select your role.");
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:3000/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password, role })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                // Store user data in localStorage
+                localStorage.setItem("username", username);
+                localStorage.setItem("role", role);
+
+                // Redirect based on role
+                if (role === "Customer") {
+                    window.location.href = "main.html";
+                } else if (role === "Worker") {
+                    window.location.href = "WorkerInterface.html";
+                } else if (role === "Admin") {
+                    window.location.href = "Admin.html";
+                }
+                } else {
+                alert(result.message || "Login failed.");
+                }
+            } catch (error) {
+                console.error("Login error:", error);
+                alert("Could not connect to server.");
+            }
+            }
+
+    </script>
+</body>
+</html>
+

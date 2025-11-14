@@ -1,0 +1,207 @@
+.payment-section {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .payment-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  .payment-section h3 {
+    font-size: 28px;
+    color: #475db3;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .payment-options label {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .card-details, .paypal-details, .applepay-details {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .card-details h4,
+  .paypal-details h4,
+  .applepay-details h4 {
+    font-size: 20px;
+    color: #475db3;
+    margin-bottom: 15px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .form-group input {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #475db3;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .form-row .form-group {
+    flex: 1;
+  }
+  
+  .save-button {
+    background-color: #475db3;
+    color: white;
+    padding: 12px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .save-button:hover {
+    background-color: #3647a3;
+    transform: translateY(-2px);
+  }
+  .payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .payment-options label {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: #444;
+  }
+  
+  .card-details, .paypal-details, .applepay-details {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .card-details h4,
+  .paypal-details h4,
+  .applepay-details h4 {
+    font-size: 20px;
+    color: #475db3;
+    margin-bottom: 15px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .form-group input {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #475db3;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .form-row .form-group {
+    flex: 1;
+  }
+  
+  .save-button {
+    background-color: #475db3;
+    color: white;
+    padding: 12px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-top: 20px;
+  }
+  
+  .save-button:hover {
+    background-color: #3647a3;
+    transform: translateY(-2px);
+  }
+  .payment-options label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  .payment-icon {
+    width: 32px;
+    height: auto;
+  }
+  
+  
+  

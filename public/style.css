@@ -1,0 +1,219 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e1e1e, #3a3a3a); 
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.floating-shapes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    list-style: none;
+    z-index: 0;
+  }
+  
+ 
+  .shape {
+    position: absolute;
+    display: block;
+    background: white;
+    opacity: 1;
+    animation: floatShapes linear infinite;
+    bottom: -100px;
+  }
+  
+  
+  .circle {
+    border-radius: 50%;
+    opacity: 1;
+  }
+  
+  .square {
+    width: 20px;
+    height: 20px;
+    background: white;
+    opacity: 1;
+    }
+      
+  .triangle {
+    width: 0;
+    height: 0;
+    background: transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid white;
+    animation: floatShapes linear infinite;
+    opacity: 1;
+  }
+  
+  
+  @keyframes floatShapes {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-1000px) rotate(720deg);
+      opacity: 0.8;
+    }
+  }
+  .floating-shapes li:nth-child(n) {
+    left: calc(100% * var(--i));
+    animation-duration: calc(15s + (var(--i) * 0.5s));
+    width: calc(10px + (var(--i) * 2px));
+    height: calc(10px + (var(--i) * 2px));
+  }
+  
+  .floating-shapes li:nth-child(1) { left: 5%; width: 20px; height: 20px; animation-duration: 8s; }
+  .floating-shapes li:nth-child(2) { left: 10%; width: 15px; height: 15px; animation-duration: 9s; }
+  .floating-shapes li:nth-child(3) { left: 20%; width: 25px; height: 25px; animation-duration: 7s; }
+  .floating-shapes li:nth-child(4) { left: 30%; width: 30px; height: 30px; animation-duration: 6s; }
+  .floating-shapes li:nth-child(5) { left: 40%; width: 18px; height: 18px; animation-duration: 10s; }
+  .floating-shapes li:nth-child(6) { left: 50%; width: 22px; height: 22px; animation-duration: 6s; }
+  .floating-shapes li:nth-child(7) { left: 60%; width: 26px; height: 26px; animation-duration: 8s; }
+  .floating-shapes li:nth-child(8) { left: 70%; width: 15px; height: 15px; animation-duration: 5s; }
+  .floating-shapes li:nth-child(9) { left: 80%; width: 25px; height: 25px; animation-duration: 9s; }
+  .floating-shapes li:nth-child(10) { left: 90%; width: 20px; height: 20px; animation-duration: 7s; }
+  
+.login-container {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    width: 350px;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+    position: relative;
+    z-index: 1;    
+}
+.form-extra {
+    text-align: right;
+    margin-top: 8px;
+    top: 10px;
+  }
+  
+  .form-extra a {
+    font-size: 13px;
+    color: #00aaff;
+    text-decoration: none;
+    transition: color 0.3s;
+    font-weight: bold;
+  }
+  
+  .form-extra a:hover {
+    color: blue;
+  }
+  
+.signup-link {
+    margin-top: 20px;
+    text-align: center;
+    color: black;
+    font-size: 14px;
+  }
+  
+  .signup-link a {
+    color: #00aaff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+  
+  .signup-link a:hover {
+    color: #ffffff;
+  }
+  
+
+.title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #000;
+}
+
+h2 {
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 0 10px;
+}
+
+.input-group i {
+    color: #999;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.input-group input {
+    border: none;
+    background: transparent;
+    padding: 12px;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+}
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(110, 142, 251, 0.3);
+}
+
+.login-button:hover {
+    background: linear-gradient(135deg, #5d7bfa, #945de7);
+    box-shadow: 0 8px 20px rgba(110, 142, 251, 0.5);
+    transform: translateY(-2px);
+}
+
+.login-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 8px rgba(110, 142, 251, 0.4);
+}
+
+.social-icons i {
+    font-size: 20px;
+    margin: 0 10px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.social-icons i:hover {
+    color: #007bff;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,16 @@
+{
+  "users": [
+    {
+      "id": "c7411bda-8b94-4391-850c-e9ddc2a20cf3",
+      "createdAt": "2025-11-14T16:35:24.876Z",
+      "updatedAt": "2025-11-14T16:36:03.124Z",
+      "approved": true,
+      "username": "chris",
+      "email": "chris@gmail.com",
+      "password": "$2a$10$gQADMeTAVx03NtDxQ/SXcOkL6Snwb38foU9/NqOR63qThDISSEhym",
+      "role": "Customer"
+    }
+  ],
+  "tasks": [],
+  "messages": []
+}

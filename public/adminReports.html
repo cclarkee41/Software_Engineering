@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Monthly Reports & Metrics</title>
+  <link rel="stylesheet" href="main.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@300;500&display=swap" rel="stylesheet"/>
+  <style>
+    li a {
+      text-decoration: none;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 8px 16px;
+      border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    li a:hover {
+      background-color: #47a8d7;
+      color: white;
+    }
+    li {
+      margin-right: 20px;
+    }
+    .download-section {
+      text-align: center;
+      margin: 40px auto;
+    }
+    .download-section button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      background-color: #3498db;
+      color: white;
+    }
+    .download-section button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <div class="logo">Help4Every1</div>
+      <li><a href="admin.html">Page</a></li>
+    </div>
+  </header>
+
+<!-- Replace inside <main id="reportContent"> with the following content -->
+
+<main id="reportContent">
+  <div class="report-header">
+    <h2>Monthly Performance Report</h2>
+    <p>Overview of key performance indicators and metrics for the current month.</p>
+  </div>
+
+  <!-- Commented Out: Demo Report Sections -->
+  
+  <section class="report-section">
+    <div class="report-box">
+      <h3>Monthly Profit Overview</h3>
+      <canvas id="profitChart"></canvas>
+      <p>Total Profit: <strong>$500,000</strong></p>
+      <p>Profit Increase: <strong>+35%</strong> from last month</p>
+    </div>
+
+    <div class="report-box">
+      <h3>Workload Overview</h3>
+      <canvas id="workloadChart"></canvas>
+      <p>Total Jobs Completed: <strong>15000</strong></p>
+      <p>Jobs per Week: <strong>3750</strong> (Avg)</p>
+    </div>
+  </section>
+
+  <section class="report-section">
+    <div class="report-box">
+      <h3>User Engagement</h3>
+      <canvas id="userEngagementChart"></canvas>
+      <p>Active Users: <strong>6740</strong></p>
+      <p>Inactive Users: <strong>30</strong></p>
+    </div>
+
+    <div class="report-box">
+      <h3>Service Request Categories</h3>
+      <canvas id="serviceRequestChart"></canvas>
+      <p>Maintenance Requests: <strong>50</strong></p>
+      <p>Consultation Requests: <strong>30</strong></p>
+      <p>Other: <strong>20</strong></p>
+    </div>
+  </section>
+
+  <section class="report-section">
+    <div class="report-box">
+      <h3>Customer Satisfaction</h3>
+      <canvas id="satisfactionChart"></canvas>
+      <p>Very Satisfied: <strong>80%</strong></p>
+      <p>Satisfied: <strong>10%</strong></p>
+      <p>Neutral: <strong>5%</strong></p>
+      <p>Unsatisfied: <strong>5%</strong></p>
+    </div>
+  </section>
+  
+
+  <!-- New Report: New Users This Month -->
+  <section class="report-section">
+    <div class="report-box">
+      <h3>New Users This Month</h3>
+      <p id="newUsersCount">Loading...</p>
+    </div>
+  </section>
+
+  <div class="download-section">
+    <h3>Download This Report</h3>
+    <button onclick="downloadHTML()">Download as HTML</button>
+    <button onclick="downloadText()">Download as TXT</button>
+    <button onclick="downloadJSON()">Download as JSON</button>
+    <button onclick="downloadPDF()">Download as PDF</button>
+  </div>
+
+  <script>
+  // NEW USERS REPORT
+  async function loadNewUserReport() {
+    try {
+      const res = await fetch('/api/new-users-month');
+      const data = await res.json();
+      document.getElementById('newUsersCount').innerText = `Total new users registered: ${data.count}`;
+    } catch (err) {
+      console.error('Failed to load new user report:', err);
+      document.getElementById('newUsersCount').innerText = 'Error loading data';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadNewUserReport);
+
+  // DOWNLOAD HTML
+  function downloadHTML() {
+    const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'monthly_report.html';
+    a.click();
+  }
+
+  // DOWNLOAD TEXT
+  function downloadText() {
+    const text = document.body.innerText;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'monthly_report.txt';
+    a.click();
+  }
+
+  // DOWNLOAD JSON
+  function downloadJSON() {
+    const reportData = {
+      profit: 500000,
+      profitGrowth: "35%",
+      jobsCompleted: 15000,
+      avgJobsPerWeek: 3750,
+      userEngagement: { active: 6740, inactive: 30 },
+      serviceRequests: { maintenance: 50, consultation: 30, other: 20 },
+      satisfaction: { very: "80%", satisfied: "10%", neutral: "5%", unsatisfied: "5%" }
+    };
+    const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'monthly_report.json';
+    a.click();
+  }
+
+  // DOWNLOAD PDF
+  async function downloadPDF() {
+    const report = document.getElementById('reportContent');
+    const buttons = document.querySelector('.download-section');
+    buttons.style.display = 'none';
+    window.scrollTo(0, 0);
+    const canvas = await html2canvas(report, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      scrollY: 0,
+      windowHeight: report.scrollHeight
+    });
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('monthly_report.pdf');
+    buttons.style.display = '';
+  }
+</script>
+
+</main>

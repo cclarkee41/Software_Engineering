@@ -1,0 +1,8 @@
+*Install dependencies*
+npm install
+
+*Run the server (no MongoDB required)*
+npm start
+
+*Open the app*
+http://localhost:3000/index.html

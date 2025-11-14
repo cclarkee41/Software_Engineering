@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Previous Orders - Help4Every1</title>
+  <link rel="stylesheet" href="p-order.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="logo">Help4Every1</div>
+    <nav>
+      <a href="main.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="task.html">Post a Task</a>
+      <a href="p-order.html" class="active">Previous Orders</a>
+      <a href="profile.html" class="user-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" viewBox="0 0 24 24">
+          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+        </svg>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Your Previous Orders</h1>
+    <div class="order-list" id="order-list">
+      <!-- Orders will be injected here -->
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Help4Every1. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Replace with actual logged-in user logic
+    const currentUser = localStorage.getItem('username');
+    const role = localStorage.getItem('role'); // optional, if needed for lookup
+
+    async function loadUserOrders() {
+      const container = document.getElementById('order-list');
+      container.innerHTML = '<p>Loading your orders...</p>';
+
+      try {
+        const res = await fetch('/api/user-orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: currentUser })
+        });
+
+        const orders = await res.json();
+        container.innerHTML = '';
+
+        if (!orders.length) {
+          container.innerHTML = '<p>No previous orders found.</p>';
+          return;
+        }
+
+        orders.forEach(order => {
+          const card = document.createElement('div');
+          card.className = 'order-card';
+          card.innerHTML = `
+            <h3>${order.taskTitle}</h3>
+            <p><strong>Date:</strong> ${new Date(order.createdAt).toLocaleDateString()}</p>
+            <p><strong>Status:</strong> Completed</p>
+            <p><strong>Details:</strong> ${order.description}</p>
+          `;
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error('Error loading orders:', err);
+        container.innerHTML = '<p>Error loading your orders. Please try again later.</p>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadUserOrders);
+  </script>
+</body>
+</html>
